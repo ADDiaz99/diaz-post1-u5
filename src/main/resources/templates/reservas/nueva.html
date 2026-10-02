@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Nueva Reserva</title>
+    <style>
+        body { font-family: sans-serif; margin: 2rem; }
+        label { display: block; margin: .5rem 0; }
+        .error { color: #b71c1c; font-weight: bold; }
+    </style>
+</head>
+<body>
+<h1>Nueva Reserva</h1>
+
+<!-- Errores de negocio (solapamiento, horario, duración), mismo texto que la API REST -->
+<p class="error" th:if="${error}" th:text="${error}"></p>
+
+<p th:if="${#lists.isEmpty(laboratorios)}">
+    No hay laboratorios registrados. Cree uno primero con POST /api/laboratorios.
+</p>
+
+<form th:action="@{/reservas}" th:object="${reserva}" method="post">
+    <!-- Errores de formato del formulario (campos vacíos, correo inválido) -->
+    <ul class="error" th:if="${#fields.hasAnyErrors()}">
+        <li th:each="err : ${#fields.allErrors()}" th:text="${err}"></li>
+    </ul>
+
+    <label>Laboratorio:
+        <select name="laboratorio.id">
+            <option th:each="lab : ${laboratorios}"
+                    th:value="${lab.id}"
+                    th:text="${lab.nombre}"
+                    th:selected="${reserva.laboratorio != null and reserva.laboratorio.id == lab.id}"></option>
+        </select>
+    </label>
+    <label>Nombre solicitante: <input type="text" th:field="*{nombreSolicitante}"/></label>
+    <label>Correo: <input type="email" th:field="*{correoSolicitante}"/></label>
+    <label>Inicio: <input type="datetime-local" th:field="*{inicio}"/></label>
+    <label>Fin: <input type="datetime-local" th:field="*{fin}"/></label>
+    <label>Motivo: <input type="text" th:field="*{motivo}"/></label>
+    <button type="submit">Reservar</button>
+</form>
+
+<p><a th:href="@{/reservas}">Volver a la lista</a></p>
+</body>
+</html>
