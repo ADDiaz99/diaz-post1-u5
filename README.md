@@ -223,7 +223,7 @@ cualquiera guarde. Para un laboratorio académico el riesgo es bajo; en producci
 con un bloqueo pesimista sobre el laboratorio (`@Lock(PESSIMISTIC_WRITE)`) o con una
 restricción de exclusión en la base de datos.
 
-## Evidencias
+## Evidencias - Capturas de pantalla
 
 ### API REST
 
